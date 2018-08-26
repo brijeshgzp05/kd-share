@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{%  block content %}
+<script type="text/javascript" src="{% static 'js/chatpage.js' %}"></script>
+
+<center><h3 class="name">Connected to {{ friend_name }}</h3></center>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3 col-sm-10 col-sm-offset-1">
+
+
+				<form action="." method="post" id="chat-form">
+				{% csrf_token %}
+				<div id="chat-bottom" class="input-group">
+
+					<div class="text-box">
+				
+						<input type='text' id="chat-msg" class="form-control" autofocus="on" autocomplete="off" placeholder="Type a message" value="" name="chat-msg"/>
+						<input type="hidden" id="rec_id" name="rec_id" value="{{ friend_pro_id }}"/>
+					</div>
+
+					<div class="btn-box">
+				
+						<button class="btn btn-danger" id="send" type="submit">Send</button>
+					</div>
+				
+				</div>
+				</form>
+
+
+				<div id="msg-list-div" class="panel-body">
+				<ul class="list-group" id="msg-list">
+
+
+					{% if msg_list %}
+
+						{% for m in msg_list %}
+
+							{% if m.sender_profile_id == user.profile.id %}
+
+								<li class="text-right list-group-item grr">{{ m.msg }}
+									{% if m.seen_status %}<span class="seen-dot"></span>{% else %}<span class="unseen-dot"></span>{% endif %}
+								</li>
+				  				<br>
+
+							{% else %}
+
+								<li class="text-left list-group-item pink">{{ m.msg }}</li>
+			  					<br>
+
+							{% endif %}
+
+						{% endfor %}
+
+					{% else %}
+						
+					{% endif %}
+
+					<div class="pagination">
+					    <span class="step-links">
+					        {% if msg_list.has_previous %}
+					            <a href="?page={{ contacts.previous_page_number }}">previous</a>
+					        {% endif %}
+
+					        <span class="current">
+					            Page {{ msg_list.number }} of {{ msg_list.paginator.num_pages }}.
+					        </span>
+
+					        {% if msg_list.has_next %}
+					            <a href="?page={{ msg_list.next_page_number }}">next</a>
+					        {% endif %}
+					    </span>
+					</div>
+
+				</ul>
+				</div>
+
+				
+				
+				
+
+			</div>
+		</div> 
+		
+	</div>
+
+	<style type="text/css">
+		.panel-body {
+		    overflow-y: scroll;
+		    height: 85%;
+		}
+
+		.text-box{
+			float:left;
+		}  
+
+		.btn-box{
+			float:left;
+		}
+		.grr{
+			background:#2ECC71;
+			color:#641E16;
+			font-weight: bold;
+			font-size:18px;
+		}
+		.pink{
+			color:#E74C3C;
+			font-weight: bold;
+			font-size:18px;
+		}
+		.name{
+			color:#E74C3C;
+		}
+		.unseen-dot {
+		  height: 25px;
+		  width: 25px;
+		  background-color: #bbb;
+		  border-radius: 50%;
+		  display: inline-block;
+		}
+		.seen-dot {
+		  height: 25px;
+		  width: 25px;
+		  background-color: #0099ff;
+		  border-radius: 50%;
+		  display: inline-block;
+		}
+	</style>
+
+<script type="text/javascript">
+	$('#chat-form').submit(function(event){
+		    event.preventDefault();
+		    var $formData = $(this).serialize()
+		    
+		    $.ajax({
+		        url :"{% url 'message:save' %}",
+		        method : 'POST',
+		        data : $formData,
+		        error : function(jqXHR, textStatus, errorThrown){
+   						
+                        console.log(jqXHR)
+                        console.log(textStatus)
+                        console.log(errorThrown)
+                    },
+		        success : function(data, textStatus, jqXHR){
+		        	$('#send').attr('disabled','disabled');
+		           
+		            $('#chat-msg').val('');
+		            $('#msg-list').prepend('<li class="text-right list-group-item grr">' + data['message'] + '</li><br>');
+
+		            
+		        }
+		    });
+		});
+
+
+
+
+		$(document).ready(function() {
+		     $('#send').attr('disabled','disabled');
+		     var cm = $('#chat-msg');
+		     cm.keyup(function() {
+		        if($(this).val() != '') {
+		            $('#send').removeAttr('disabled');
+		        }
+		        else {
+		            $('#send').attr('disabled','disabled');
+		        }
+		     });
+
+		     function timer(){
+		     	if (cm.val()==''){
+		     		location.href = window.location.href;
+		     	}
+		     }
+		     setInterval(timer, 5000);
+		 });
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "base_for_forms.html" %}
+{% load staticfiles %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}" />
+{% endblock %}
+{% block content %}
+
+<script type="text/javascript" src="{% static 'js/register.js' %}"></script>
+
+
+<div id="loading-overlay">
+    <div class="loading-icon"></div>
+</div>
+
+<div class="container">
+    <div class="row">
+
+
+        <div class="form-div">
+                <div class="col-md-4 col-lg-4 col-sm-10 col-md-offset-8 col-lg-offset-8 col-sm-offset-10"><br><br>
+                    <div class="error_block">
+                        <center></center>         
+                    </div>
+                    
+                    <form class='reg-form' method='POST' action='.' data-url="{% url 'accounts:register' %}">
+                        {% csrf_token %}
+                        {{form.as_p|safe}}<br>
+                        <center>
+                            <button type='submit' class="btn btn-success">Register</button>
+                            <button type='reset' class="btn btn-info">Clear</button>
+                            <br><br>
+                            
+                        </center>
+                           
+                    </form>
+                    <center>
+                        <a href="{% url 'accounts:login' %}"><p><b>Already registered? Login here</b></p></a>
+                    </center>
+                </div>
+        </div>
+
+        <div class="login-btn-div">
+            <center>
+                <h1>Your form is Successfully submitted.</h1>
+                
+                <button class="btn btn-success login">Login here</button>
+                
+            </center>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+   
+
+.form-div{
+    display:block;
+}
+
+.login-btn-div{
+    display:none;
+}
+
+.error_block{
+    color:red;
+    font-family:tahoma;
+}
+a{
+    color:white;
+}
+a:hover{
+    color:white;
+}
+/*css for spin*/
+    #loading-overlay {
+    position: absolute;
+    width: 100%;
+    height:100%;
+    left: 0;
+    top: 0;
+    display: none;
+    align-items: center;
+    background-color: #000;
+    z-index: 999;
+    opacity: 0.5;
+}
+.loading-icon{ position:absolute;border-top:2px solid #fff;border-right:2px solid #fff;border-bottom:2px solid #fff;border-left:2px solid #767676;border-radius:25px;width:25px;height:25px;margin:0 auto;position:absolute;left:50%;margin-left:-20px;top:50%;margin-top:-20px;z-index:4;-webkit-animation:spin 1s linear infinite;-moz-animation:spin 1s linear infinite;animation:spin 1s linear infinite;}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        
+        $('.login').click(function(){
+            document.location.href="{% url 'accounts:login' %}";
+        });
+    });
+</script>
+
+{% endblock %}

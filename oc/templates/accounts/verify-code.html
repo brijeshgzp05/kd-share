@@ -1,0 +1,76 @@
+{% extends 'base_for_forms.html' %}
+{% load static %}
+{% block content %}
+
+<script type="text/javascript" src="{% static 'js/verify.js' %}"></script>
+
+<div id="loading-overlay">
+    <div class="loading-icon"></div>
+</div>
+
+<div class="col-md-4 col-lg-4 col-sm-10 col-md-offset-4 col-lg -offset-4 col-sm-offset-4">
+    <div class="form-div">
+	   <div class="error_block">
+            <center></center>         
+        </div>
+        <form class='code-form' method='POST' action='.' data-url="{% url 'accounts:code' %}">
+            {% csrf_token %}
+            {{form.as_p|safe}}<br>
+            <center>
+                <button type="submit" class="btn btn-warning">Continue</button> 
+            </center>
+        </form>
+    </div>
+
+    <div class="login-div">
+        <center>
+            <h3>Your password changed successfully.</h3>
+            <br><br>
+            <button class="btn btn-success login">Click here</button>
+        </center>
+    </div>
+</div>
+
+<style type="text/css">
+    .form-div{
+        display:block;
+    }
+    .login-div{
+        display:none;
+    }
+
+	.error_block{
+        color:red;
+        font-family:tahoma;
+    }
+
+	/*css for spin*/
+
+    #loading-overlay {
+        position: absolute;
+        width: 100%;
+        height:100%;
+        left: 0;
+        top: 0;
+        display: none;
+        align-items: center;
+        background-color: #000;
+        z-index: 999;
+        opacity: 0.5;
+    }
+    .loading-icon{ position:absolute;border-top:2px solid #fff;border-right:2px solid #fff;border-bottom:2px solid #fff;border-left:2px solid #767676;border-radius:25px;width:25px;height:25px;margin:0 auto;position:absolute;left:50%;margin-left:-20px;top:50%;margin-top:-20px;z-index:4;-webkit-animation:spin 1s linear infinite;-moz-animation:spin 1s linear infinite;animation:spin 1s linear infinite;}
+    @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+    @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+    @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } } 
+</style>
+
+<script type="text/javascript">
+    
+    $(document).ready(function(){
+        $('.login').click(function(){
+            document.location.href = "{% url 'accounts:login' %}";
+        });
+    });
+</script>
+
+{% endblock %}

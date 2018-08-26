@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br><br>
+<div class="col-md-4 col-lg-4 col-sm-10 col-md-offset-4 col-lg-offset-4 col-sm-offset-1">
+	{% if friends %}
+	<center>
+		<ul class="list-unstyled">
+			{% for f in friends %}
+			<li>
+				<a class="name" href="{% url 'accounts:pseudopro' username=f.username %}">{{ f.name }}</a> 
+				<p class="timestamp">Since {{ f.timestamp }}</p>
+			</li><hr>
+			{% endfor %}
+		</ul>
+	</center>
+	{% else %}
+		<p>No friends</p>
+
+
+	{% endif %}
+</div>
+<style type="text/css">
+	body{
+        background: #5DADE2;
+        color:white;
+    }
+	a{
+		color:#660033;
+	}
+	.name{
+		font-size:20px;
+	}
+	hr{
+		border-top:dashed 1px;
+		
+	}
+	.timestamp{
+		color:#ffff00;
+	}
+</style>
+
+{% endblock %}

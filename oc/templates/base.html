@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		KD SHARE
+	</title>
+	  <meta charset="utf-8 UTF+e490">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	
+	<nav class="navbar navbar-inverse navbar-fixed-top navbar-custom" role="navigation">
+	    <div class="navbar-header">
+		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+		    </button>    
+	    	<a id="title" class="navbar-brand" href="#">KD SHARE</a>
+	  	</div>
+	  <div class="navbar-collapse collapse">
+	    <ul class="nav navbar-nav navbar-left">
+	    	<li><a href="{% url 'home:home' %}"><span class="glyphicon glyphicon-home" ></span></a></li>
+	    	<li><a href="{% url 'accounts:online' %}"><span class="glyphicon glyphicon-send" ></span></a></li>
+	        <li><a href="{% url 'accounts:profile' pk=user.profile.id %}"><span class="glyphicon glyphicon-user" ></span></a></li>
+	        <li><a href="{% url 'friend:friends' %}"><span class="glyphicon glyphicon-heart" ></span></a></li>
+	        <li><a href="{% url 'friend:view' %}"><span class="glyphicon glyphicon-globe" ></span></a></li>
+	        <li><a href="{% url 'message:unseen' %}"><span class="glyphicon glyphicon-envelope" ></span></a></li>
+	    </ul>
+	    <ul class="nav navbar-nav navbar-right">
+	    	<li><a href="#" class="welcome">Welcome {{ user.first_name }} </a></li>
+	    	<li><a href="{% url 'accounts:logout' %}"><span class="glyphicon glyphicon-off" ></span></a>
+	        </li>
+	       
+	    </ul>
+	  </div>
+	</nav>
+	<br><br>
+
+	{% block content %}
+	{% endblock %}
+
+	<style type="text/css">
+		body{
+			background: #5DADE2;
+			color:white;
+		}
+		.navbar-custom {
+		    background-color: #2C3E50;
+		}
+		.navbar-brand {
+		  position: absolute;
+		  width: auto;
+		  left: 15px;
+		  text-align: center;
+		  margin:0 auto;
+		}
+
+		.navbar-toggle {
+		  z-index:3;
+		}
+
+		
+		@media screen and (min-width: 768px) {
+		  .navbar-left {
+		    position: absolute;
+		    left: 50%;
+		    transform: translateX(-50%);
+		  }
+		}
+		#title, .welcome{
+			color:white;
+		}
+	</style>
+
+<script type="text/javascript">
+	function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

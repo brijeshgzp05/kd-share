@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+	<div class="container-fluid">
+		<div class="row">
+			<p id="pp"></p>
+			<div class="col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 col-sm-10 col-sm-offset-1">
+				<center>
+
+					{% if pic.dp %}
+
+						<img src="{{ pic.dp.url }}" alt="{{ user.first_name }}" class="img-thumbnail img-rounded img-responsive pro-img"><br>
+
+					{% else %}
+
+						{% if male %}
+
+						<img src="{% static 'images/blank-dp-male.jpg' %}" alt="{{ user.first_name }}" class="img-thumbnail img-rounded img-responsive pro-img"><br>
+
+						{% else %}
+
+						<img src="{% static 'images/blank-dp-female.jpg' %}" alt="{{ user.first_name }}" class="img-thumbnail img-rounded img-responsive pro-img"><br>
+
+						{% endif %}
+
+					{% endif %}
+					<a href="{% url 'accounts:unfriend' id=u.profile.id %}">Unfriend</a>
+					<h2>{{ u.first_name }} {{ u.last_name }}</h2>
+					<br>
+					<button class="btn btn-info msg">Message</button><hr>
+				</center>
+			</div>
+		</div>
+		<div class="row">
+			<div class="about-view">
+			<div class="col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 col-sm-10 col-sm-offset-1">
+				
+				<div class="outer">
+				 <div class="float-left-section">Birthdate</div>
+				 <div class="float-right-section">{{ u.profile.dob }}</div> 
+				</div>
+				<hr>
+				<div class="outer">
+				 <div class="float-left-section">Gender</div>
+				 <div class="float-right-section">{{ u.profile.gender }}</div> 
+				</div>
+				<hr>
+				<div class="outer">
+				 <div class="float-left-section">Joined on</div>
+				 <div class="float-right-section">{{ u.profile.date_created }}</div> 
+				</div>
+				<hr>
+				<div class="outer">
+				 <div class="float-left-section">Mobile</div>
+				 <div class="float-right-section">{{ u.profile.mobile }}</div> 
+				</div>
+				<hr>
+				<div class="outer">
+				 <div class="float-left-section">Email</div>
+				 <div class="float-right-section">{{ u.email }}</div> 
+				</div>
+				<hr>
+				
+			</div>
+			</div>
+
+		</div>
+	</div>
+	
+
+<style type="text/css">
+	.pro-img{
+		width:200px;
+		height:200px;
+		margin-top:30px;
+	}
+	
+	hr{
+		color:gray;
+		border-top: dotted 1px;
+	}
+	
+	.float-right-section{
+		float:right;
+	}
+	a{
+		color:white;
+	}
+</style>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.msg').click(function(){
+			var endpoint = "{% url 'message:chat' id=123 %}"
+			endpoint = endpoint.replace('123',{{u.profile.id}});
+			document.location.href = endpoint
+		});
+	});
+</script>
+{% endblock %}

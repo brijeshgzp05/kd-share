@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<br><br>
+<div class="col-md-4 col-lg-4 col-sm-10 col-md-offset-4 col-lg-offset-4 col-sm-offset-1">
+	<center>
+		<form action="" method='post' enctype="multipart/form-data">{% csrf_token %}
+			{{ form }}
+			<br><br>
+			<button type='submit' class="btn btn-info">Change</button>
+		</form>
+		
+	</center>
+</div>
+
+<style type="text/css">
+	input{
+		color:black;
+	}
+</style>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var element = 'input[name="profile_id"]';
+		$(element).val({{ user.profile.id }});
+		$(element).hide();
+		$('label').hide();
+		$('input[name="dp"]').addClass('form-control');
+	});
+</script>
+{% endblock %}
